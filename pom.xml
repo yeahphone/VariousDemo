@@ -9,6 +9,12 @@
   <version>1.0</version>
 
   <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.0.7.RELEASE</version>
+    </dependency>
+
     <!-- Commons Math -->
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -17,11 +23,58 @@
     </dependency>
     <!-- Commons Math end -->
 
+    <!-- j2v8 -->
+    <dependency>
+      <groupId>com.eclipsesource.j2v8</groupId>
+      <artifactId>j2v8_win32_x86_64</artifactId>
+      <version>4.6.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.eclipsesource.j2v8</groupId>
+      <artifactId>j2v8_linux_x86_64</artifactId>
+      <version>4.6.0</version>
+    </dependency>
+    <!-- j2v8 end -->
+
+    <!-- lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.20</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- lombok end -->
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.7</version>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>RELEASE</version>
       <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.6</version>
+    </dependency>
+
+    <!-- joda-time -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.9.9</version>
+    </dependency>
+    <!-- joda-time end -->
+
+    <dependency>
+      <groupId>com.aspose</groupId>
+      <artifactId>aspose-words</artifactId>
+      <version>15.10.0c</version>
     </dependency>
   </dependencies>
 

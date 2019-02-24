@@ -11,18 +11,16 @@ import org.apache.commons.math3.fraction.Fraction;
 import org.apache.commons.math3.fraction.FractionFormat;
 import org.apache.commons.math3.geometry.euclidean.twod.Line;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.DecompositionSolver;
-import org.apache.commons.math3.linear.LUDecomposition;
-import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.RealVector;
+import org.apache.commons.math3.linear.*;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.apache.commons.math3.util.FastMath;
-import org.junit.jupiter.api.Test;
 import org.apache.commons.math3.util.CombinatoricsUtils;
+import org.apache.commons.math3.util.FastMath;
+import org.apache.commons.math3.util.Precision;
+import org.junit.jupiter.api.Test;
+import java.math.BigDecimal;
+import org.apache.commons.math3.util.FastMath;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Yeahphone
@@ -192,5 +190,19 @@ class CommonsMathDemo {
     System.out.println(result);
 
     assertEquals(0, result.abs(), 1e-10);
+  }
+
+  @Test
+  void testRound() {
+    double d = Precision.round(1234.56789, 3, BigDecimal.ROUND_HALF_UP);
+    System.out.println(d);
+  }
+
+  @Test
+  void testMax() {
+    double a = 1;
+    double b = 1.001;
+    double c = FastMath.max(a, b);
+    assertEquals(b, c, 1e-12);
   }
 }

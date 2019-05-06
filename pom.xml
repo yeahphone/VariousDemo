@@ -76,6 +76,14 @@
       <artifactId>aspose-words</artifactId>
       <version>15.10.0c</version>
     </dependency>
+
+    <!-- apacheds -->
+    <dependency>
+      <groupId>org.apache.directory.api</groupId>
+      <artifactId>api-all</artifactId>
+      <version>2.0.0.AM2</version>
+    </dependency>
+    <!-- apacheds end -->
   </dependencies>
 
   <build>

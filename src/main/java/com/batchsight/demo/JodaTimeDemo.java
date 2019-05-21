@@ -5,6 +5,10 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * <p>Title: </p>
  * <p>Description: </p>
@@ -28,5 +32,12 @@ class JodaTimeDemo {
   private String dateTimeToString(DateTime dateTime) {
     DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
     return dateTimeFormatter.print(dateTime);
+  }
+
+  @Test
+  void testDate() throws ParseException {
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Date date = format.parse( "2019-5-5 21:36:15" );
+    System.out.println(date);
   }
 }

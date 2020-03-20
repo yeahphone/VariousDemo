@@ -8,6 +8,10 @@
   <artifactId>VariousDemo</artifactId>
   <version>1.0</version>
 
+  <properties>
+    <swagger-core-version>2.0.8</swagger-core-version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -40,7 +44,7 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.16.20</version>
+      <version>1.18.8</version>
       <scope>provided</scope>
     </dependency>
     <!-- lombok end -->
@@ -92,6 +96,78 @@
       <version>2.6.2</version>
     </dependency>
     <!-- Apache Common Pool end -->
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr4</artifactId>
+      <version>4.7.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.antlr</groupId>
+      <artifactId>antlr4-runtime</artifactId>
+      <version>4.7.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.swagger</groupId>
+      <artifactId>swagger-jersey2-jaxrs</artifactId>
+      <version>1.5.22</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet-core</artifactId>
+      <version>2.29</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-multipart</artifactId>
+      <version>2.29</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.jersey</groupId>
+      <artifactId>jersey-core</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.ws.rs</groupId>
+          <artifactId>jsr311-api</artifactId>
+        </exclusion>
+      </exclusions>
+      <version>1.19.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-joda</artifactId>
+      <version>2.9.9</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.jaxrs</groupId>
+      <artifactId>jackson-jaxrs-json-provider</artifactId>
+      <version>2.9.9</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+      <version>2.9.9</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>28.1-jre</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -104,6 +180,51 @@
           <source>1.8</source>
           <target>1.8</target>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.antlr</groupId>
+        <artifactId>antlr4-maven-plugin</artifactId>
+        <version>4.7.2</version>
+        <configuration>
+          <sourceDirectory>${project.build.sourceDirectory}/../resources/antlr4</sourceDirectory>
+          <outputDirectory>${project.build.directory}/antlr4</outputDirectory>
+          <visitor>true</visitor>
+          <generateTestSources>true</generateTestSources>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>antlr4</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>4.1.0</version>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <skip>true</skip>
+              <inputSpec>src/main/resources/api.yml</inputSpec>
+              <apiPackage>com.batchsight.demo.api</apiPackage>
+              <modelPackage>com.batchsight.demo.dto</modelPackage>
+              <generatorName>jaxrs-jersey</generatorName>
+              <modelNameSuffix>DTO</modelNameSuffix>
+              <configOptions>
+                <dateLibrary>joda</dateLibrary>
+                <sourceFolder>src/main/java</sourceFolder>
+                <library>jersey2</library>
+                <java8>true</java8>
+              </configOptions>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

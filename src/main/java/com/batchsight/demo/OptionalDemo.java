@@ -6,6 +6,8 @@ import org.joda.time.DateTime;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -36,5 +38,19 @@ public class OptionalDemo {
     String name = "Justin";
     user.orElseThrow(() -> new RuntimeException("User is null")).setName(name);
     System.out.println(user.map(User::getName).orElseThrow(() -> new RuntimeException("Username is null")));
+  }
+
+  @Test
+  void testTypeCast() {
+    try {
+      Map<String, Object> map = new HashMap<>();
+      map.put("int", 123);
+      map.put("string", "456");
+
+      Optional<String> str = Optional.ofNullable(map.get("test")).filter(String.class::isInstance).map(String.class::cast);
+      System.out.println(str.orElse("error: null point"));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }

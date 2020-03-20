@@ -205,4 +205,9 @@ class CommonsMathDemo {
     double c = FastMath.max(a, b);
     assertEquals(b, c, 1e-12);
   }
+
+  @Test
+  void testBoolean() {
+    System.out.println(true);
+  }
 }

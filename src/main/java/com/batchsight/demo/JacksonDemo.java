@@ -2,10 +2,20 @@ package com.batchsight.demo;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
+import com.fasterxml.jackson.databind.util.ISO8601Utils;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
+import java.text.FieldPosition;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -132,8 +142,74 @@ class JacksonDemo {
       System.out.println(map.toString());
   }
 
-  private <T> T fromJsonString(String json, TypeReference typeRef) throws IOException {
+  private <T> T fromJsonString(String json, TypeReference<T> typeRef) throws IOException {
     ObjectMapper mapper = new ObjectMapper();
     return mapper.readValue(json, typeRef);
+  }
+
+  class RFC3339DateFormat extends ISO8601DateFormat {
+
+    // Same as ISO8601DateFormat but serializing milliseconds.
+    @Override
+    public StringBuffer format(Date date, StringBuffer toAppendTo, FieldPosition fieldPosition) {
+      String value = ISO8601Utils.format(date, true);
+      toAppendTo.append(value);
+      return toAppendTo;
+    }
+
+  }
+
+  @Test
+  void testJoda() throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper()
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        .registerModule(new JodaModule())
+        .setDateFormat(new RFC3339DateFormat());
+
+    DateTime now = DateTime.now();
+
+    StringWriter sw = new StringWriter();
+    JsonGenerator jsonGenerator = objectMapper.getFactory().createGenerator(sw);
+    jsonGenerator.writeObject(now);
+    String jsonString = sw.toString();
+    System.out.println(jsonString);
+  }
+
+  @Data
+  static class TestDTO {
+      private int varIable01 = 1;
+      private int vAriable02 = 2;
+      private int VAriable03 = 3;
+      private int VARiable04 = 4;
+      private int VARIABLE05 = 5;
+      private int VARIablE06 = 6;
+      private int vaRiablE07 = 7;
+      private int variable07 = -7;
+      private int vARIABLE08 = 8;
+      private int VarIable09 = 9;
+      private boolean variable10 = true;
+  }
+
+  @Test
+  void testCapitalization() throws IOException {
+    TestDTO testDTO01 = new TestDTO();
+    System.out.println(testDTO01.toString());
+
+    StringWriter sw = new StringWriter();
+    JsonGenerator jsonGenerator = new ObjectMapper().getFactory().createGenerator(sw);
+    jsonGenerator.writeObject(testDTO01);
+    String jsonString = sw.toString();
+
+    System.out.println(jsonString);
+
+    ObjectMapper objectMapper = new ObjectMapper()
+        .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+        .registerModule(new JodaModule())
+        .setDateFormat(new RFC3339DateFormat());
+
+    TestDTO testDTO02 = objectMapper.readValue(jsonString, TestDTO.class);
+    System.out.println(testDTO02.toString());
   }
 }

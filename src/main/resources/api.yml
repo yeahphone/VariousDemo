@@ -1,0 +1,105 @@
+openapi: 3.0.2
+info:
+  title: iBatchPharma API
+  version: 1.0.0
+servers:
+  - url: 'http://node02.cloud.batchsight.com/api'
+    description: Internal staging server for testing
+  - url: 'http://172.168.11.33/api'
+    description: Internal staging server for develping
+
+tags:
+  - name: 'AuditTrail'
+    description: 审计追踪
+
+paths:
+  /v3/audit-trails/{id}:
+    get:
+      tags:
+        - AuditTrail
+      summary: API11164 根据ID/UUID获取审计追踪基本信息
+      description: 通过审计追踪ID/UUID获取审计追踪基本信息（注:ID或UUID均放在路径中，后端进行统一处理）
+      operationId: queryAuditTrailById
+      parameters:
+        - name: id
+          in: path
+          description: 审计追踪ID/UUID
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 操作成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  errorCode:
+                    type: integer
+                    format: int32
+                    description: 异常代码
+                  data:
+                    $ref: '#/components/schemas/AuditTrailDto'
+                  errorInfo:
+                    type: string
+                    description: 异常信息
+                  dataType:
+                    type: string
+                    description: 数据类型
+                  total:
+                    type: integer
+                    format: int32
+                    description: 记录数
+                  apiId:
+                    type: integer
+                    format: int32
+                    description: 接口ID
+                  elapsed:
+                    type: integer
+                    format: int64
+                    description: 接口耗时(ns)
+                  success:
+                    type: boolean
+                    description: 接口调用成功标志
+components:
+  schemas:
+
+    AuditTrailDto:
+      type: object
+      description: 审计追踪数据实体
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: ID
+        uuid:
+          type: string
+          description: UUID
+        login_user_id:
+          type: integer
+          format: int32
+          description: 登录人ID
+        sid:
+          type: integer
+          format: int32
+          description: 签名ID
+        reason:
+          type: string
+          description: 原因
+        client_id:
+          type: integer
+          format: int32
+          description: 终端ID
+        workcenter_id:
+          type: integer
+          format: int32
+          description: 工位ID
+        timestamp:
+          type: integer
+          format: int64
+          description: 记录时间
+        version:
+          type: integer
+          format: int32
+          description: 版本:用于扩展，不同版本的数据对应不同的程序逻辑

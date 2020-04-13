@@ -2,7 +2,7 @@ package com.batchsight.demo;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
+import org.junit.*;
 import org.springframework.util.Assert;
 
 import java.io.*;

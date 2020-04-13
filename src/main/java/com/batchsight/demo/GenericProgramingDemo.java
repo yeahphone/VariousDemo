@@ -1,7 +1,7 @@
 package com.batchsight.demo;
 
 import org.apache.commons.math3.util.FastMath;
-import org.junit.jupiter.api.Test;
+import org.junit.*;
 
 /**
  * <p>Title: GenericProgramingDemo</p>
@@ -14,24 +14,39 @@ import org.junit.jupiter.api.Test;
  *       2018/7/13    Yeahphone        Created
  * </pre>
  */
-class GenericProgramingDemo {
+public class GenericProgramingDemo {
 
   @Test
-  void genericFunctionTest() {
+  public void genericFunctionTest() {
     Generic<Integer> gi = new Generic<>(10);
     Generic<Double> gd = new Generic<>(FastMath.PI);
+    Generic gu = new Generic();
 
     showKeyValue1(gi);
     showKeyValue1(gd);
+    showKeyValue1(gu);
+
     showKeyValue2(1.5f);
     showKeyValue2(1.5);
+
+    gu.setKey(123);
+    showKeyValue2(gu.getKey());
+
+    gu.setKey(12.3);
+    showKeyValue2(gu.getKey());
   }
 
-  class Generic<T extends Number> {
+  static class Generic<T extends Number> {
 
     private T key;
 
+    Generic() {}
+
     Generic(T key) {
+      this.key = key;
+    }
+
+    void setKey(T key) {
       this.key = key;
     }
 

@@ -2,8 +2,7 @@ package com.batchsight.demo;
 
 import com.eclipsesource.v8.V8;
 import com.eclipsesource.v8.V8ResultUndefined;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.*;
 
 /**
  * <p>Title: </p>
@@ -23,22 +22,22 @@ class J2v8Demo {
     void testScriptBoolean() {
         V8 v8 = V8.createV8Runtime();
         Object result = v8.executeScript("2 > 1");
-        assertEquals(Boolean.class.getName(), result.getClass().getName());
-        assertEquals("true", String.valueOf(result));
+        Assert.assertEquals(Boolean.class.getName(), result.getClass().getName());
+        Assert.assertEquals("true", String.valueOf(result));
     }
 
     @Test
     void testScriptNumber() {
         V8 v8 = V8.createV8Runtime();
         Object result = v8.executeScript("3.14159");
-        assertEquals(Double.class.getName(), result.getClass().getName());
+        Assert.assertEquals(Double.class.getName(), result.getClass().getName());
     }
 
     @Test
     void testScriptNan() {
         V8 v8 = V8.createV8Runtime();
         Object result = v8.executeScript("0.0/0.0");
-        assertEquals(Double.NaN, result);
+        Assert.assertEquals(Double.NaN, result);
     }
 
     @Test
@@ -46,7 +45,7 @@ class J2v8Demo {
         try {
             V8 v8 = V8.createV8Runtime();
             Object result = v8.executeStringScript("123");
-            fail("Exptected a V8ResultUndefined to be thrown");
+            Assert.fail("Exptected a V8ResultUndefined to be thrown");
         } catch (V8ResultUndefined ignore) {}
     }
 }

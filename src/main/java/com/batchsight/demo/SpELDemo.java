@@ -1,7 +1,7 @@
 package com.batchsight.demo;
 
 import lombok.Getter;
-import org.junit.jupiter.api.Test;
+import org.junit.*;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 

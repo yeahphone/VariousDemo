@@ -1,7 +1,6 @@
 package com.batchsight.demo;
 
-import org.junit.jupiter.api.Test;
-
+import org.junit.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 

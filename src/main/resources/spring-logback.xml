@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+  <!-- 都说spring boot使用日志需要引入这个，但是我引入了之后总是打印两份日志，所以我去除了，并不影响使用 -->
+  <!-- <include resource="org/springframework/boot/logging/logback/base.xml"/> -->
+  <!-- 尽量别用绝对路径，如果带参数不同容器路径解释可能不同,以下配置参数在pom.xml里 -->
+  <!-- 日志级别 -->
+  <!--<property name="log.root.level" value="@log.root.level@"/>-->
+  <!--<property name="log.root.level" value="${LOG_LEVEL}"/>-->
+  <!-- 其他日志级别 -->
+  <!--<property name="log.other.level" value="@log.other.level@"/>-->
+  <!--<property name="log.other.level" value="${LOG_LEVEL}"/>-->
+  <!-- 日志文件大小 -->
+  <property name="max.file.size" value="50MB"/>
+  <!-- 日志文件保留天数 -->
+  <property name="max.history" value="7"/>
+  <!-- 所有的归档日志的大小。当超过限制时，会删掉旧的归档日志 -->
+  <property name="total.size.cap" value="500MB"/>
+
+  <!-- 引用yml中的配置信息 -->
+  <springProperty scope = "context" name = "rabbitmq.host" source = "spring.rabbitmq.host" />
+  <springProperty scope = "context" name = "rabbitmq.port" source = "spring.rabbitmq.port" />
+  <springProperty scope = "context" name = "rabbitmq.username" source = "spring.rabbitmq.username" />
+  <springProperty scope = "context" name = "rabbitmq.password" source = "spring.rabbitmq.password" />
+  <springProperty scope = "context" name = "rabbitmq.routingKeyPattern" source = "logback-rabbitmq.routingKeyPattern" />
+  <springProperty scope = "context" name = "rabbitmq.exchangeName" source = "logback-rabbitmq.exchangeName" />
+  <springProperty scope = "context" name = "rabbitmq.virtualHost" source = "logback-rabbitmq.virtualHost" />
+  <springProperty scope = "context" name = "log.root.level" source = "logging.level.root" />
+  <springProperty scope = "context" name = "log.other.level" source = "logging.level.other" />
+  <springProperty scope = "context" name="log.base" source="logging.path"/>
+  <springProperty scope = "context" name="log.moduleName" source="spring.application.name"/>
+  <springProperty scope = "context" name="hostname" source="spring.client.hostname"/>
+
+  <!--控制台输出 -->
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+      <Pattern>[%red(${hostname})][%yellow(%date{yyyy-MM-dd HH:mm:ss.SSS})][%highlight(%level)][%green(%thread)] %magenta(%logger{56}.%method):%cyan(%L) -%msg%n</Pattern>
+    </encoder>
+  </appender>
+
+  <!-- 日志文件输出 -->
+  <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>
+      ${log.base}/${log.moduleName}.log
+    </File>
+    <!-- 设置日志不超过${max.file.size}时的保存路径，注意如果 是web项目会保存到Tomcat的bin目录 下 -->
+    <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。-->
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>${log.base}/archive/${log.moduleName}_%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+      <maxHistory>${max.history}</maxHistory>
+      <maxFileSize>${max.file.size}</maxFileSize>
+      <totalSizeCap>${total.size.cap}</totalSizeCap>
+      <!-- 当天的日志大小 超过${max.file.size}时,压缩日志并保存 -->
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>${max.file.size}</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+      <!-- 日志输出的文件的格式  -->
+    </rollingPolicy>
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread] %logger{56}.%method:%L -%msg%n</pattern>
+    </layout>
+  </appender>
+
+  <!-- 日志文件输出 -->
+  <appender name="event" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <File>
+      ${log.base}/${log.moduleName}_event.log
+    </File><!-- 设置日志不超过${max.file.size}时的保存路径，注意如果 是web项目会保存到Tomcat的bin目录 下 -->
+    <!-- 滚动记录文件，先将日志记录到指定文件，当符合某个条件时，将日志记录到其他文件。-->
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <fileNamePattern>${log.base}/archive/${log.moduleName}_event_%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+      <maxHistory>${max.history}</maxHistory>
+      <maxFileSize>${max.file.size}</maxFileSize>
+      <totalSizeCap>${total.size.cap}</totalSizeCap>
+      <!-- 当天的日志大小 超过${max.file.size}时,压缩日志并保存 -->
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>${max.file.size}</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+    <!-- 日志输出的文件的格式  -->
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread] %logger{56}.%method:%L -%msg%n</pattern>
+    </layout>
+  </appender>
+
+  <!-- 日志消息输出 -->
+  <appender name="AMQP" class="org.springframework.amqp.rabbit.logback.AmqpAppender">
+    <layout>
+      <pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}][%-5level][%thread] %logger{56}.%method:%L -%msg%n</pattern>
+    </layout>
+    <!-- 虚拟HOST -->
+    <virtualHost>${rabbitmq.virtualHost}</virtualHost>
+    <!-- rabbitmq host -->
+    <host>${rabbitmq.host}</host>
+    <!-- rabbitmq 端口号 -->
+    <port>${rabbitmq.port}</port>
+    <!-- rabbitmq 用户名 -->
+    <username>${rabbitmq.username}</username>
+    <!-- rabbitmq 密码 -->
+    <password>${rabbitmq.password}</password>
+    <!-- 交换器 路由键 routingKey -->
+    <routingKeyPattern>${rabbitmq.routingKeyPattern}</routingKeyPattern>
+    <!-- 交换器名称 - 修改时请遵循命名规范(容器名称.[队列特点or路由特点].使用的平台名称.作用) -->
+    <exchangeName>${rabbitmq.exchangeName}</exchangeName>
+
+    <!-- 申明 交换器 -->
+    <declareExchange>true</declareExchange>
+    <generateId>true</generateId>
+    <charset>UTF-8</charset>
+    <!-- 持久化交换机 -->
+    <durable>false</durable>
+    <deliveryMode>PERSISTENT</deliveryMode>
+  </appender>
+
+  <!-- root将级别为“DEBUG”及大于“DEBUG”的日志信息交给已经配置好的名为“Console”的appender处理，“Console”appender将信息打印到Console -->
+  <root level="${log.root.level}">
+    <appender-ref ref="console"/>
+    <appender-ref ref="file"/>
+    <appender-ref ref="AMQP"/>
+  </root>
+
+  <logger name="monitorLog" level="${log.other.level}" additivity="false">
+    <appender-ref ref="console"/>
+    <appender-ref ref="event"/>
+  </logger>
+
+  <!--mybibatsSQL日志-->
+  <logger name="java.sql.Connection"/>
+  <logger name="java.sql.Statement"/>
+  <logger name="java.sql.ParameterMetaData"/>
+  <logger name="java.sql.ResultSet"/>
+</configuration>

@@ -8,17 +8,13 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.fasterxml.jackson.databind.util.ISO8601Utils;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.joda.time.DateTime;
-import org.junit.jupiter.api.Test;
+import org.junit.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.*;
 import java.text.FieldPosition;
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * <p>Title: </p>
@@ -38,12 +34,12 @@ class JacksonDemo {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = "[\"aaa\", 123, 1.23, {\"bbb\":1, \"ccc\":\"ddd\"}]";
         List value = objectMapper.readValue(json, List.class);
-        assertTrue(value.get(3) instanceof Map);
-        assertEquals(ArrayList.class, value.getClass());
+        Assert.assertTrue(value.get(3) instanceof Map);
+        Assert.assertEquals(ArrayList.class, value.getClass());
 
         json = "{\"a\":1, \"b\":\"c\"}";
         Map value2 = objectMapper.readValue(json, Map.class);
-        assertEquals(LinkedHashMap.class, value2.getClass());
+        Assert.assertEquals(LinkedHashMap.class, value2.getClass());
     }
 
     @Test
@@ -59,7 +55,7 @@ class JacksonDemo {
         jsonGenerator.writeObject(entity);
         String jsonString = sw.toString();
         System.out.println(jsonString);
-        assertEquals("{\"id\":123,\"uuid\":\"AAECAwQFBgcICQoLDA0ODw==\",\"generalVariable\":3.1415,\"valueType\":\"java.lang.Double\",\"key\":\"key1\"}", jsonString);
+        Assert.assertEquals("{\"id\":123,\"uuid\":\"AAECAwQFBgcICQoLDA0ODw==\",\"generalVariable\":3.1415,\"valueType\":\"java.lang.Double\",\"key\":\"key1\"}", jsonString);
     }
 
     @Test
@@ -68,11 +64,11 @@ class JacksonDemo {
       ObjectMapper objectMapper = new ObjectMapper();
 
       Entity entity = objectMapper.readValue(jsonString, Entity.class);
-      assertEquals(123, (int)entity.getId());
-      assertEquals("key1", entity.getConfigKey());
-      assertEquals(Double.class, entity.getValueType());
-      assertTrue(Arrays.equals(entity.getUuid(), new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF}));
-      assertEquals(3.1415, entity.getGeneralVariable());
+      Assert.assertEquals(123, (int)entity.getId());
+      Assert.assertEquals("key1", entity.getConfigKey());
+      Assert.assertEquals(Double.class, entity.getValueType());
+      Assert.assertTrue(Arrays.equals(entity.getUuid(), new byte[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF}));
+      Assert.assertEquals(3.1415, entity.getGeneralVariable());
     }
 
   private byte[] uuidToByte(UUID uuid) {

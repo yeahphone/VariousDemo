@@ -6,7 +6,7 @@ import org.apache.directory.api.ldap.model.exception.LdapException;
 import org.apache.directory.api.ldap.model.message.SearchScope;
 import org.apache.directory.api.ldap.model.name.Dn;
 import org.apache.directory.ldap.client.api.*;
-import org.junit.jupiter.api.Test;
+import org.junit.*;
 
 import java.io.IOException;
 

@@ -16,11 +16,8 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 import org.apache.commons.math3.util.FastMath;
 import org.apache.commons.math3.util.Precision;
-import org.junit.jupiter.api.Test;
+import org.junit.*;
 import java.math.BigDecimal;
-import org.apache.commons.math3.util.FastMath;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Yeahphone
@@ -55,9 +52,9 @@ class CommonsMathDemo {
     /* 标准差 6093.055 */
     double standardDeviation = descriptiveStatistics.getStandardDeviation();
 
-    assertEquals(2439.818, mean, 0.001);
-    assertEquals(51, median);
-    assertEquals(6093.055, standardDeviation, 0.001);
+    Assert.assertEquals(2439.818, mean, 0.001);
+    Assert.assertEquals(51, median, 1e-11);
+    Assert.assertEquals(6093.055, standardDeviation, 0.001);
   }
 
   /**
@@ -87,7 +84,7 @@ class CommonsMathDemo {
 
     System.out.println("c = " + c);
 
-    assertEquals(0, function.value(c), 1e-7);
+    Assert.assertEquals(0, function.value(c), 1e-7);
   }
 
   /**
@@ -119,7 +116,7 @@ class CommonsMathDemo {
 
     System.out.println(a + " x " + solution + " = " + axsolution);
 
-    assertEquals(b, axsolution);
+    Assert.assertEquals(b, axsolution);
   }
 
   /**
@@ -135,7 +132,7 @@ class CommonsMathDemo {
 
     System.out.println(intersection);
 
-    assertEquals(new Vector2D(2,2), intersection);
+    Assert.assertEquals(new Vector2D(2,2), intersection);
   }
 
   /**
@@ -145,7 +142,7 @@ class CommonsMathDemo {
   void testFactorial() {
 
     long factorial = CombinatoricsUtils.factorial(10);
-    assertEquals(3628800, factorial);
+    Assert.assertEquals(3628800, factorial);
   }
 
   /**
@@ -161,7 +158,7 @@ class CommonsMathDemo {
 
     System.out.println(new FractionFormat().format(sum));
 
-    assertEquals(new Fraction(11,15), sum);
+    Assert.assertEquals(new Fraction(11,15), sum);
   }
 
   /**
@@ -189,7 +186,7 @@ class CommonsMathDemo {
 
     System.out.println(result);
 
-    assertEquals(0, result.abs(), 1e-10);
+    Assert.assertEquals(0, result.abs(), 1e-10);
   }
 
   @Test
@@ -203,7 +200,7 @@ class CommonsMathDemo {
     double a = 1;
     double b = 1.001;
     double c = FastMath.max(a, b);
-    assertEquals(b, c, 1e-12);
+    Assert.assertEquals(b, c, 1e-12);
   }
 
   @Test

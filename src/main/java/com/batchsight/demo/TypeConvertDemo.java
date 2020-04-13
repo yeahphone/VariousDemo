@@ -4,19 +4,18 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.joda.time.DateTime;
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * <p>Title: </p>
@@ -39,53 +38,53 @@ class TypeConvertDemo {
     void testValueOfString() {
         Object obj = null;
         String val = String.valueOf(obj);
-        assertEquals(val, "null");
+      Assert.assertEquals(val, "null");
 
         val = String.valueOf(3.14159);
-        assertEquals(strPI, val);
+        Assert.assertEquals(strPI, val);
     }
 
     @Test
     void testStringToBoolean() {
         boolean b = Boolean.valueOf("abc");
-        assertFalse(b);
+        Assert.assertFalse(b);
 
         b = Boolean.valueOf("true");
-        assertTrue(b);
+        Assert.assertTrue(b);
 
         b = Boolean.valueOf("True");
-        assertTrue(b);
+        Assert.assertTrue(b);
 
         b = Boolean.valueOf("TRUE");
-        assertTrue(b);
+        Assert.assertTrue(b);
 
         b = Boolean.valueOf("tRue");
-        assertTrue(b);
+        Assert.assertTrue(b);
     }
 
     @Test
     void testStringToNumber() {
         double val = Double.valueOf(strPI);
-        assertEquals(PI, val, 1e-11);
+        Assert.assertEquals(PI, val, 1e-11);
 
         val = Double.valueOf("abc");
-        assertEquals(0, val);
+        Assert.assertEquals(0, val);
     }
 
     @Test
     void testNumberUtils() {
         /* 可解析数字 */
-        assertTrue(NumberUtils.isParsable("123"));
-        assertTrue(NumberUtils.isParsable("123.456"));
-        assertTrue(NumberUtils.isParsable("-123.456"));
-        assertTrue(NumberUtils.isParsable(".123"));
-        assertTrue(NumberUtils.isParsable("001"));
+        Assert.assertTrue(NumberUtils.isParsable("123"));
+        Assert.assertTrue(NumberUtils.isParsable("123.456"));
+        Assert.assertTrue(NumberUtils.isParsable("-123.456"));
+        Assert.assertTrue(NumberUtils.isParsable(".123"));
+        Assert.assertTrue(NumberUtils.isParsable("001"));
 
         /* 不可解析数字 */
-        assertFalse(NumberUtils.isParsable("+1"));
-        assertFalse(NumberUtils.isParsable("0x123"));
-        assertFalse(NumberUtils.isParsable("123L"));
-        assertFalse(NumberUtils.isParsable("123f"));
+        Assert.assertFalse(NumberUtils.isParsable("+1"));
+        Assert.assertFalse(NumberUtils.isParsable("0x123"));
+        Assert.assertFalse(NumberUtils.isParsable("123L"));
+        Assert.assertFalse(NumberUtils.isParsable("123f"));
     }
 
     @Test
@@ -93,7 +92,7 @@ class TypeConvertDemo {
         double d = 3.14159;
         Object pi = d;
 
-        assertTrue(pi instanceof Number);
+        Assert.assertTrue(pi instanceof Number);
     }
 
     @Test
@@ -101,7 +100,7 @@ class TypeConvertDemo {
         try {
             NumberUtils.createLong("123.0");
         } catch (NumberFormatException e) {
-            assertEquals(e.getMessage(), "For input string: \"123.0\"");
+            Assert.assertEquals(e.getMessage(), "For input string: \"123.0\"");
         }
     }
 
@@ -132,7 +131,7 @@ class TypeConvertDemo {
       HashSet set2 = jsonToObject(json1, HashSet.class);
       String json2 = toJsonString(set2);
       System.out.println(json1 + "\n" + json2);
-      assertEquals(json1, json2);
+      Assert.assertEquals(json1, json2);
     }
 
     @Test
@@ -220,7 +219,7 @@ class TypeConvertDemo {
       DateTime dateTime = null;
       String json = toJsonString(dateTime);
       /* 对象为 null 时返回的 json 字符串为空字符串 "" */
-      assertEquals("", json);
+      Assert.assertEquals("", json);
       dateTime = jsonToObject(json, DateTime.class);
       System.out.println(String.valueOf(dateTime));
     }

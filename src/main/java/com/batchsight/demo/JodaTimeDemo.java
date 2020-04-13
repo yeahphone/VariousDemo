@@ -6,7 +6,7 @@ import org.joda.time.Duration;
 import org.joda.time.Period;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.junit.jupiter.api.Test;
+import org.junit.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

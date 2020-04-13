@@ -1,7 +1,7 @@
 package com.batchsight.demo.commonpool;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
-import org.junit.jupiter.api.Test;
+import org.junit.*;
 
 import java.util.ArrayList;
 import java.util.List;

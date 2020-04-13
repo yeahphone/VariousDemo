@@ -1,0 +1,6 @@
+logging:
+  config: classpath:spring-logback.xml
+  level:
+    root: info
+    other: info
+  path: /var/log/${spring.application.name}/
